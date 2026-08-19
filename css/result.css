@@ -1,0 +1,154 @@
+/* ==========================================
+   结果页与排版卡片 (Result Screen)
+   ========================================== */
+.result-screen {
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 24px;
+}
+
+.result-card {
+  width: 100%;
+  background: #EAE3D9; /* 质感沉静米泥色 */
+  border: 1px solid rgba(44, 42, 41, 0.15);
+  border-radius: 24px;
+  padding: 32px 24px;
+  box-shadow: 0 16px 40px rgba(74, 51, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-tag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--coffee-dark);
+  border: 1px solid var(--coffee-dark);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.card-date {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--text-sub);
+}
+
+.res-coffee-name {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.flavor-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.flavor-pills .pill {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-sub);
+  background: rgba(244, 240, 234, 0.6);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(44, 42, 41, 0.1);
+  margin-bottom: 24px;
+}
+
+.quote-box {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.quote-mark {
+  font-size: 32px;
+  font-family: Georgia, serif;
+  color: var(--text-sub);
+  opacity: 0.3;
+  position: absolute;
+  top: -16px;
+  left: -8px;
+}
+
+.quote-text {
+  font-size: 14px;
+  line-height: 1.85;
+  letter-spacing: 0.12em;
+  color: var(--text-main);
+  position: relative;
+  z-index: 1;
+}
+
+/* 陪伴书籍模块 */
+.book-card {
+  background: rgba(244, 240, 234, 0.5);
+  border-left: 2px solid var(--coffee-dark);
+  padding: 14px 16px;
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 28px;
+}
+
+.book-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.book-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+}
+
+.book-author {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+}
+
+.book-reason {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-sub);
+  letter-spacing: 0.06em;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--text-sub);
+}
+
+.re-tweak-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-sub);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  padding: 12px 0;
+}
