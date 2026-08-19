@@ -1,0 +1,108 @@
+:root {
+  --bg-color: #f4f0ea;
+  --card-bg: #eae3d9;
+  --text-main: #2c2a29;
+  --text-sub: #7c736a;
+  --line-soft: rgba(44, 42, 41, 0.16);
+
+  --coffee-dark: #4a332a;
+  --coffee-mid: #8b5e3c;
+  --coffee-light: #c4b29e;
+
+  --font-serif: "Songti SC", "STSong", "Noto Serif CJK SC",
+    "Source Han Serif SC", Georgia, serif;
+
+  /* 会由 coffee-visual.js 根据选择动态更新 */
+  --liquid-color: #6b4634;
+  --liquid-opacity: 0.86;
+  --milk-color: #e7d8c2;
+  --crema-color: #c9965a;
+  --cup-width: 118px;
+  --cup-height: 168px;
+  --liquid-height: 68%;
+  --mood-color: rgba(139, 94, 60, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  font: inherit;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.5), transparent 38%),
+    radial-gradient(circle at 50% 68%, rgba(217, 199, 174, 0.25), transparent 54%),
+    var(--bg-color);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.04);
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  padding: 56px 24px 42px;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+
+.primary-btn {
+  border: 1px solid rgba(44, 42, 41, 0.72);
+  background: transparent;
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 12px 34px;
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  cursor: pointer;
+  transition: 0.35s ease;
+}
+
+.primary-btn:active {
+  transform: scale(0.97);
+  background: var(--text-main);
+  color: var(--bg-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
