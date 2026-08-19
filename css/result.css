@@ -1,154 +1,328 @@
 /* ==========================================
-   结果页与排版卡片 (Result Screen)
+   Result：日系文学杂志页 / 今日咖啡笺
    ========================================== */
+
 .result-screen {
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 24px;
+  display: block;
+  overflow-y: auto;
+  padding: 26px 20px calc(34px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(255, 255, 255, 0.36),
+      transparent 28%
+    ),
+    #eee8df;
 }
 
-.result-card {
-  width: 100%;
-  background: #EAE3D9; /* 质感沉静米泥色 */
-  border: 1px solid rgba(44, 42, 41, 0.15);
-  border-radius: 24px;
-  padding: 32px 24px;
-  box-shadow: 0 16px 40px rgba(74, 51, 42, 0.08);
-  display: flex;
-  flex-direction: column;
+.coffee-note {
   position: relative;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.card-tag {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--coffee-dark);
-  border: 1px solid var(--coffee-dark);
-  padding: 3px 10px;
-  border-radius: 20px;
-}
-
-.card-date {
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  color: var(--text-sub);
-}
-
-.res-coffee-name {
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--text-main);
-  line-height: 1.4;
-  margin-bottom: 14px;
-}
-
-.flavor-pills {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.flavor-pills .pill {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--text-sub);
-  background: rgba(244, 240, 234, 0.6);
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-.divider {
   width: 100%;
-  height: 1px;
-  background: rgba(44, 42, 41, 0.1);
-  margin-bottom: 24px;
+  min-height: 760px;
+  padding: 22px 22px 18px;
+  overflow: hidden;
+  border: 1px solid rgba(48, 43, 40, 0.23);
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(100% - 1px),
+      rgba(48, 43, 40, 0.025) calc(100% - 1px)
+    ),
+    #f6f2eb;
+  color: #302b28;
+  box-shadow: 8px 10px 26px rgba(65, 49, 38, 0.07);
 }
 
-.quote-box {
-  position: relative;
-  margin-bottom: 28px;
-}
-
-.quote-mark {
-  font-size: 32px;
-  font-family: Georgia, serif;
-  color: var(--text-sub);
-  opacity: 0.3;
+/* 轻微纸张颗粒感：不使用外部图片 */
+.coffee-note::before {
   position: absolute;
-  top: -16px;
-  left: -8px;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.22;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(67, 55, 45, 0.12) 0.45px, transparent 0.6px),
+    radial-gradient(rgba(255, 255, 255, 0.72) 0.4px, transparent 0.7px);
+  background-position: 0 0, 5px 5px;
+  background-size: 8px 8px, 11px 11px;
+  content: "";
 }
 
-.quote-text {
-  font-size: 14px;
-  line-height: 1.85;
-  letter-spacing: 0.12em;
-  color: var(--text-main);
+.coffee-note > * {
   position: relative;
   z-index: 1;
 }
 
-/* 陪伴书籍模块 */
-.book-card {
-  background: rgba(244, 240, 234, 0.5);
-  border-left: 2px solid var(--coffee-dark);
-  padding: 14px 16px;
-  border-radius: 0 12px 12px 0;
-  margin-bottom: 28px;
+.note-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
-.book-label {
-  font-size: 10px;
+.note-brand,
+.note-date {
+  font-size: 9px;
   letter-spacing: 0.2em;
-  color: var(--text-sub);
-  text-transform: uppercase;
-  margin-bottom: 6px;
+}
+
+.note-brand {
+  color: #4a4038;
+}
+
+.note-date {
+  color: #85796e;
+}
+
+.note-top-line {
+  width: 100%;
+  height: 1px;
+  margin-top: 13px;
+  background: rgba(48, 43, 40, 0.33);
+}
+
+/* ===== 主视觉区 ===== */
+
+.note-visual-area {
+  position: relative;
+  display: flex;
+  min-height: 250px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.note-side-writing {
+  position: absolute;
+  top: 22px;
+  left: 1px;
+  color: #86786d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 8px;
+  line-height: 1.7;
+  letter-spacing: 0.15em;
+  writing-mode: vertical-rl;
+}
+
+.result-coffee-visual {
+  width: 180px;
+  height: 230px;
+  transform: scale(0.84);
+  transform-origin: center bottom;
+}
+
+/* 结果页不显示过于强烈的调配页氛围光晕 */
+.result-coffee-visual .steam-wrap {
+  top: 0;
+}
+
+.note-ink-mark {
+  position: absolute;
+  right: -24px;
+  bottom: 14px;
+  width: 114px;
+  height: 74px;
+  border-radius: 57% 43% 40% 60% / 54% 35% 65% 46%;
+  opacity: 0.3;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(113, 76, 53, 0.32) 0%,
+    rgba(160, 126, 97, 0.14) 44%,
+    transparent 72%
+  );
+  filter: blur(4px);
+  transform: rotate(-13deg);
+}
+
+/* ===== 咖啡实际信息 ===== */
+
+.coffee-intro {
+  padding: 6px 0 22px 31px;
+}
+
+.editorial-label {
+  color: #897b70;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+}
+
+.actual-coffee-name {
+  max-width: 280px;
+  margin-top: 12px;
+  color: #2f2925;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.42;
+  letter-spacing: 0.07em;
+}
+
+.actual-coffee-detail {
+  margin-top: 8px;
+  color: #786b62;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.13em;
+}
+
+.flavor-line {
+  margin-top: 18px;
+  color: #63574f;
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.12em;
+}
+
+.note-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(48, 43, 40, 0.2);
+}
+
+/* ===== 谏言 ===== */
+
+.advice-section {
+  padding: 25px 10px 30px 31px;
+}
+
+.advice-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.theme-tag {
+  color: #80634d;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  white-space: nowrap;
+}
+
+.literary-quote {
+  position: relative;
+  margin: 22px 0 0;
+  color: #342e2a;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: 0.1em;
+}
+
+.literary-quote::before {
+  position: absolute;
+  top: -26px;
+  left: -22px;
+  color: rgba(107, 82, 64, 0.23);
+  font-family: Georgia, serif;
+  font-size: 62px;
+  line-height: 1;
+  content: "“";
+}
+
+/* ===== 书籍 ===== */
+
+.book-section {
+  padding: 0 0 20px 31px;
+}
+
+.book-rule {
+  width: 52px;
+  height: 1px;
+  margin-bottom: 20px;
+  background: #6f5948;
+}
+
+.book-layout {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+}
+
+.book-index {
+  padding-top: 2px;
+  color: #9b8c80;
+  font-family: Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
 }
 
 .book-title {
-  font-size: 14px;
-  font-weight: 600;
+  margin-top: 9px;
+  color: #332d29;
+  font-size: 18px;
+  font-weight: 400;
   letter-spacing: 0.08em;
-  color: var(--text-main);
 }
 
 .book-author {
+  margin-top: 6px;
+  color: #887a6f;
   font-size: 11px;
-  color: var(--text-sub);
-  margin-bottom: 6px;
+  letter-spacing: 0.14em;
 }
 
 .book-reason {
+  max-width: 260px;
+  margin-top: 13px;
+  color: #665a52;
   font-size: 12px;
-  line-height: 1.6;
-  color: var(--text-sub);
-  letter-spacing: 0.06em;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
 }
 
-.card-footer {
+/* ===== 页脚 ===== */
+
+.note-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  color: var(--text-sub);
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid rgba(48, 43, 40, 0.16);
+  color: #9a8c80;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+}
+
+.note-footer-mark {
+  font-size: 14px;
+  letter-spacing: 0;
 }
 
 .re-tweak-btn {
+  display: block;
+  margin: 22px auto 0;
+  padding: 10px 18px;
+  border: 0;
   background: transparent;
-  border: none;
-  color: var(--text-sub);
+  color: #76695f;
   font-size: 12px;
   letter-spacing: 0.2em;
   cursor: pointer;
-  padding: 12px 0;
+}
+
+.re-tweak-btn:active {
+  opacity: 0.58;
+}
+
+@media (max-width: 360px) {
+  .coffee-note {
+    padding: 19px 17px 16px;
+  }
+
+  .actual-coffee-name {
+    font-size: 21px;
+  }
+
+  .literary-quote {
+    font-size: 15px;
+  }
+
+  .coffee-intro,
+  .advice-section,
+  .book-section {
+    padding-left: 22px;
+  }
 }

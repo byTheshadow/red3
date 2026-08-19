@@ -19,12 +19,7 @@ function mergeVisual() {
 
 function updateCoffeeVisual() {
   const visual = mergeVisual();
-
   const root = document.documentElement;
-  const coffeeVisual = document.getElementById("coffeeVisual");
-  const cup = document.getElementById("cup");
-
-  if (!coffeeVisual || !cup) return;
 
   root.style.setProperty("--liquid-color", visual.liquidColor);
   root.style.setProperty("--liquid-opacity", visual.liquidOpacity);
@@ -35,40 +30,61 @@ function updateCoffeeVisual() {
   root.style.setProperty("--liquid-height", visual.liquidHeight);
   root.style.setProperty("--mood-color", visual.moodColor);
 
-  coffeeVisual.classList.toggle("show-crema", Boolean(visual.showCrema));
-  coffeeVisual.classList.toggle("show-milk", Boolean(visual.showMilk));
-  coffeeVisual.classList.toggle("show-bubbles", Boolean(visual.showBubbles));
-  coffeeVisual.classList.toggle("show-steam", Boolean(visual.showSteam));
-  coffeeVisual.classList.toggle("show-ice", Boolean(visual.showIce));
+  /**
+   * 同时更新：
+   * - 调配页的 #coffeeVisual / #cup
+   * - 结果页的 #resultCoffeeVisual / #resultCup
+   */
+  const visualPairs = [
+    {
+      visualElement: document.getElementById("coffeeVisual"),
+      cupElement: document.getElementById("cup")
+    },
+    {
+      visualElement: document.getElementById("resultCoffeeVisual"),
+      cupElement: document.getElementById("resultCup")
+    }
+  ];
 
-  coffeeVisual.classList.remove(
-    "show-petals",
-    "show-salt",
-    "show-citrus"
-  );
+  visualPairs.forEach(({ visualElement, cupElement }) => {
+    if (!visualElement || !cupElement) return;
 
-  if (visual.topping === "petals") {
-    coffeeVisual.classList.add("show-petals");
-  }
+    visualElement.classList.toggle("show-crema", Boolean(visual.showCrema));
+    visualElement.classList.toggle("show-milk", Boolean(visual.showMilk));
+    visualElement.classList.toggle("show-bubbles", Boolean(visual.showBubbles));
+    visualElement.classList.toggle("show-steam", Boolean(visual.showSteam));
+    visualElement.classList.toggle("show-ice", Boolean(visual.showIce));
 
-  if (visual.topping === "salt") {
-    coffeeVisual.classList.add("show-salt");
-  }
+    visualElement.classList.remove(
+      "show-petals",
+      "show-salt",
+      "show-citrus"
+    );
 
-  if (visual.topping === "citrus") {
-    coffeeVisual.classList.add("show-citrus");
-  }
+    if (visual.topping === "petals") {
+      visualElement.classList.add("show-petals");
+    }
 
-  cup.classList.remove("espresso", "tall");
+    if (visual.topping === "salt") {
+      visualElement.classList.add("show-salt");
+    }
 
-  if (visual.cupShape === "espresso") {
-    cup.classList.add("espresso");
-  }
+    if (visual.topping === "citrus") {
+      visualElement.classList.add("show-citrus");
+    }
 
-  if (visual.cupShape === "tall") {
-    cup.classList.add("tall");
-  }
+    cupElement.classList.remove("espresso", "tall");
+
+    if (visual.cupShape === "espresso") {
+      cupElement.classList.add("espresso");
+    }
+
+    if (visual.cupShape === "tall") {
+      cupElement.classList.add("tall");
+    }
+  });
 }
+
 
 function collectTraits() {
   const allTraits = [];

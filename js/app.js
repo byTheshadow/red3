@@ -19,21 +19,39 @@ document.addEventListener("DOMContentLoaded", initApp);
 function initApp() {
   setTodayDate();
 
-  document.getElementById("startBtn").addEventListener("click", () => {
-    initBuilder();
-    switchScreen("builderScreen");
-  });
+  const startBtn = document.getElementById("startBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const reStartBtn = document.getElementById("reStartBtn");
 
-  document.getElementById("prevBtn").addEventListener("click", handlePrevStep);
-  document.getElementById("nextBtn").addEventListener("click", handleNextStep);
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      initBuilder();
+      switchScreen("builderScreen");
+    });
+  }
 
-  document.getElementById("reStartBtn").addEventListener("click", () => {
-    switchScreen("openingScreen");
-  });
+  if (prevBtn) {
+    prevBtn.addEventListener("click", handlePrevStep);
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", handleNextStep);
+  }
+
+  if (reStartBtn) {
+    reStartBtn.addEventListener("click", () => {
+      switchScreen("openingScreen");
+    });
+  }
 }
 
 /**
- * 设置开场页与结果卡片中的日期
+ * 设置结果卡片日期。
+ *
+ * 开场页已改为咖啡倾倒动画，不再展示日期与星期；
+ * 仍保留 dateMain / dateSub 的兼容性判断，
+ * 即使旧页面结构存在也可正常工作。
  */
 function setTodayDate() {
   const now = new Date();
@@ -58,9 +76,17 @@ function setTodayDate() {
   const dateSub = document.getElementById("dateSub");
   const resultDate = document.getElementById("resDate");
 
-  if (dateMain) dateMain.textContent = dateText;
-  if (dateSub) dateSub.textContent = weekDays[now.getDay()];
-  if (resultDate) resultDate.textContent = dateText;
+  if (dateMain) {
+    dateMain.textContent = dateText;
+  }
+
+  if (dateSub) {
+    dateSub.textContent = weekDays[now.getDay()];
+  }
+
+  if (resultDate) {
+    resultDate.textContent = dateText;
+  }
 }
 
 /**
@@ -87,9 +113,8 @@ function initBuilder() {
   state.currentStep = 0;
 
   /**
-   * 每次重新开启调配，默认选择每类中的第一项。
-   * 如果你希望“重新调配”保留上一次选择，
-   * 可以删除下面的 state.selections 重置部分。
+   * 每次重新开启调配时，默认选择每一类的第一项。
+   * 若希望保留上一次选择，可删除下面的重置逻辑。
    */
   state.selections = {
     beans: optionData.beans[0],
@@ -104,29 +129,42 @@ function initBuilder() {
 }
 
 /**
- * 渲染当前调配步骤和选项
+ * 渲染当前调配步骤与选项
  */
 function renderStep() {
   const currentStepConfig = steps[state.currentStep];
 
-  if (!currentStepConfig) return;
+  if (!currentStepConfig) {
+    return;
+  }
 
   const stepKey = currentStepConfig.key;
   const currentOptions = optionData[stepKey];
 
-  document.getElementById("stepKicker").textContent =
+  const stepKicker = document.getElementById("stepKicker");
+  const stepTitle = document.getElementById("stepTitle");
+  const stepDesc = document.getElementById("stepDesc");
+  const stepCount = document.getElementById("stepCount");
+  const optionGrid = document.getElementById("optionGrid");
+
+  if (
+    !stepKicker ||
+    !stepTitle ||
+    !stepDesc ||
+    !stepCount ||
+    !optionGrid ||
+    !Array.isArray(currentOptions)
+  ) {
+    return;
+  }
+
+  stepKicker.textContent =
     `STEP ${String(state.currentStep + 1).padStart(2, "0")}`;
 
-  document.getElementById("stepTitle").textContent =
-    currentStepConfig.title;
+  stepTitle.textContent = currentStepConfig.title;
+  stepDesc.textContent = currentStepConfig.desc;
+  stepCount.textContent = `${state.currentStep + 1} / ${steps.length}`;
 
-  document.getElementById("stepDesc").textContent =
-    currentStepConfig.desc;
-
-  document.getElementById("stepCount").textContent =
-    `${state.currentStep + 1} / ${steps.length}`;
-
-  const optionGrid = document.getElementById("optionGrid");
   optionGrid.innerHTML = "";
 
   currentOptions.forEach((option) => {
@@ -161,6 +199,10 @@ function updateNavigationButtons() {
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
 
+  if (!prevBtn || !nextBtn) {
+    return;
+  }
+
   const isFirstStep = state.currentStep === 0;
   const isLastStep = state.currentStep === steps.length - 1;
 
@@ -172,7 +214,9 @@ function updateNavigationButtons() {
  * 上一步
  */
 function handlePrevStep() {
-  if (state.currentStep <= 0) return;
+  if (state.currentStep <= 0) {
+    return;
+  }
 
   state.currentStep -= 1;
   renderStep();
@@ -194,13 +238,14 @@ function handleNextStep() {
 }
 
 /**
- * 在谏言库中，找到 traits 重合度最高的结果。
+ * 在谏言库中找到 traits 重合度最高的结果。
  *
- * 同分时：使用当天日期和用户 traits 进行稳定选择，
- * 避免每次结果都固定为数据库第一条。
+ * 同分时以当天日期和用户 traits 生成稳定结果，
+ * 让同一天、相同选择得到相同谏言，
+ * 但不会永远固定为数据库第一条。
  *
- * @param {string[]} userTraits
- * @returns {object|null}
+ * @param {string[]} userTraits 用户选择对应的特征
+ * @returns {object|null} 最匹配的谏言数据
  */
 function findBestMatch(userTraits) {
   if (!Array.isArray(adviceData) || adviceData.length === 0) {
@@ -241,7 +286,34 @@ function findBestMatch(userTraits) {
 }
 
 /**
- * 完成调配后，渲染结果卡片
+ * 拼接用户实际选择的咖啡名称。
+ *
+ * @returns {string} 例如：浅烘耶加雪菲 · 手冲
+ */
+function getActualCoffeeName() {
+  const bean = state.selections.beans?.label || "今日咖啡";
+  const method = state.selections.methods?.label || "";
+
+  return method ? `${bean} · ${method}` : bean;
+}
+
+/**
+ * 拼接基底、点睛风味与温度。
+ *
+ * @returns {string} 例如：燕麦奶 / 干桂花 / 温热
+ */
+function getActualCoffeeDetail() {
+  const base = state.selections.bases?.label;
+  const accent = state.selections.accents?.label;
+  const temperature = state.selections.temperatures?.label;
+
+  return [base, accent, temperature]
+    .filter(Boolean)
+    .join(" / ");
+}
+
+/**
+ * 完成调配后，渲染结果页。
  */
 function showResultScreen() {
   const userTraits = collectTraits();
@@ -252,51 +324,108 @@ function showResultScreen() {
     return;
   }
 
-  document.getElementById("resTag").textContent =
-    resultData.theme_tag || "今日咖啡谏言";
+  const actualCoffeeName = getActualCoffeeName();
+  const actualCoffeeDetail = getActualCoffeeDetail();
 
-  document.getElementById("resCoffeeName").textContent =
-    resultData.coffee_name || "一杯属于今天的咖啡";
+  /**
+   * 兼容两种结果页 HTML：
+   *
+   * 新版：
+   * - #resActualCoffeeName
+   * - #resActualCoffeeDetail
+   * - #resFlavorLine
+   *
+   * 旧版：
+   * - #resCoffeeName
+   * - #resFlavorPills
+   */
+  const resActualCoffeeName = document.getElementById("resActualCoffeeName");
+  const resCoffeeName = document.getElementById("resCoffeeName");
+  const resActualCoffeeDetail = document.getElementById("resActualCoffeeDetail");
 
-  document.getElementById("resQuote").textContent =
-    resultData.quote || "愿你在这一杯咖啡里，慢慢听见自己的心。";
+  if (resActualCoffeeName) {
+    resActualCoffeeName.textContent = actualCoffeeName;
+  } else if (resCoffeeName) {
+    resCoffeeName.textContent = actualCoffeeName;
+  }
 
-  renderFlavorPills(resultData.flavor_notes || []);
+  if (resActualCoffeeDetail) {
+    resActualCoffeeDetail.textContent = actualCoffeeDetail;
+  }
+
+  const resTag = document.getElementById("resTag");
+  const resQuote = document.getElementById("resQuote");
+
+  if (resTag) {
+    resTag.textContent = resultData.theme_tag || "今日咖啡谏言";
+  }
+
+  if (resQuote) {
+    resQuote.textContent =
+      resultData.quote || "愿你在这一杯咖啡里，慢慢听见自己的心。";
+  }
+
+  renderFlavorLine(resultData.flavor_notes || []);
   renderBookRecommendation(resultData.book_recommendation || {});
 
+  updateCoffeeVisual();
   switchScreen("resultScreen");
 }
 
 /**
- * 渲染风味标签
+ * 渲染风味内容。
  *
- * @param {string[]} flavorNotes
+ * 优先使用新版的 #resFlavorLine；
+ * 若页面仍是旧版，则自动渲染到 #resFlavorPills。
+ *
+ * @param {string[]} flavorNotes 风味标签数组
  */
-function renderFlavorPills(flavorNotes) {
-  const pillsContainer = document.getElementById("resFlavorPills");
-  pillsContainer.innerHTML = "";
+function renderFlavorLine(flavorNotes) {
+  const notes = Array.isArray(flavorNotes) && flavorNotes.length
+    ? flavorNotes
+    : ["一杯属于今天的风味"];
 
-  flavorNotes.forEach((note) => {
-    const pill = document.createElement("span");
-    pill.className = "pill";
-    pill.textContent = note;
-    pillsContainer.appendChild(pill);
-  });
+  const flavorLine = document.getElementById("resFlavorLine");
+  const flavorPills = document.getElementById("resFlavorPills");
+
+  /* 新版：文学杂志风的一行文字 */
+  if (flavorLine) {
+    flavorLine.textContent = notes.join("　·　");
+  }
+
+  /* 旧版：胶囊风味标签 */
+  if (flavorPills) {
+    flavorPills.innerHTML = "";
+
+    notes.forEach((note) => {
+      const pill = document.createElement("span");
+      pill.className = "flavor-pill";
+      pill.textContent = note;
+      flavorPills.appendChild(pill);
+    });
+  }
 }
 
 /**
- * 渲染书籍推荐
+ * 渲染书籍推荐。
  *
- * @param {object} book
+ * @param {object} book 书籍数据
  */
 function renderBookRecommendation(book) {
-  document.getElementById("resBookTitle").textContent =
-    book.title || "一本适合今日的书";
+  const bookTitle = document.getElementById("resBookTitle");
+  const bookAuthor = document.getElementById("resBookAuthor");
+  const bookReason = document.getElementById("resBookReason");
 
-  document.getElementById("resBookAuthor").textContent =
-    book.author || "";
+  if (bookTitle) {
+    bookTitle.textContent = book.title || "一本适合今日的书";
+  }
 
-  document.getElementById("resBookReason").textContent =
-    book.reason || "找一个安静的片刻，让文字陪这杯咖啡慢慢冷却。";
+  if (bookAuthor) {
+    bookAuthor.textContent = book.author || "";
+  }
+
+  if (bookReason) {
+    bookReason.textContent =
+      book.reason || "找一个安静的片刻，让文字陪这杯咖啡慢慢冷却。";
+  }
 }
-

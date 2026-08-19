@@ -15,27 +15,50 @@
 
   <div class="app-container">
 
-    <!-- Screen 1: 开场页 -->
-    <section class="screen opening-screen" id="openingScreen">
-      <header class="date-header">
-        <div class="date-main" id="dateMain">2026.08.20</div>
-        <div class="date-sub" id="dateSub">THURSDAY</div>
-      </header>
+   <!-- Screen 1: 开场页 -->
+<section class="screen opening-screen" id="openingScreen">
+  <header class="opening-header">
+    <p class="opening-kicker">DAILY COFFEE WHISPERS</p>
+    <h1 class="opening-title">让一杯咖啡，慢慢开始今天</h1>
+  </header>
 
-      <main class="canvas-stage">
-        <div class="ink-bloom"></div>
-        <svg class="ink-svg" viewBox="0 0 200 200">
-          <circle class="drop" cx="100" cy="100" r="4.5"></circle>
-          <circle class="ripple-1" cx="100" cy="100" r="40"></circle>
-          <circle class="ripple-2" cx="100" cy="100" r="40"></circle>
-        </svg>
-      </main>
+  <main class="canvas-stage" aria-label="咖啡正在倒入杯中">
+    <div class="coffee-glow"></div>
 
-      <footer class="footer-action">
-        <p class="whisper-subtitle">萃取今日的情绪<br>调配一杯专属谏言</p>
-        <button class="primary-btn" id="startBtn">开启调配</button>
-      </footer>
-    </section>
+    <!-- 咖啡壶与倾倒动画 -->
+    <div class="pour-wrap">
+      <div class="coffee-pot">
+        <div class="pot-handle"></div>
+        <div class="pot-body"></div>
+        <div class="pot-spout"></div>
+      </div>
+      <div class="coffee-stream"></div>
+    </div>
+
+    <!-- 杯子与咖啡液面 -->
+    <div class="opening-cup-wrap">
+      <div class="opening-saucer"></div>
+      <div class="opening-cup">
+        <div class="cup-rim"></div>
+        <div class="coffee-surface">
+          <span class="coffee-wave wave-1"></span>
+          <span class="coffee-wave wave-2"></span>
+        </div>
+        <div class="cup-body"></div>
+        <div class="cup-handle"></div>
+      </div>
+    </div>
+
+    <span class="steam-line steam-line-1"></span>
+    <span class="steam-line steam-line-2"></span>
+    <span class="steam-line steam-line-3"></span>
+  </main>
+
+  <footer class="footer-action">
+    <p class="whisper-subtitle">萃取今日的情绪<br>调配一杯专属谏言</p>
+    <button class="primary-btn" id="startBtn">开启调配</button>
+  </footer>
+</section>
 
     <!-- Screen 2: 调配页 -->
     <section class="screen builder-screen hidden" id="builderScreen">
@@ -82,42 +105,104 @@
     </section>
 
     <!-- Screen 3: 结果卡片页 (Result) -->
-    <section class="screen result-screen hidden" id="resultScreen">
-      <div class="result-card">
-        <div class="card-header">
-          <div class="card-tag" id="resTag">接纳与沉淀</div>
-          <div class="card-date" id="resDate">2026.08.20</div>
+   <!-- Screen 3：今日咖啡笺 -->
+<section class="screen result-screen hidden" id="resultScreen">
+  <article class="coffee-note">
+    <header class="note-header">
+      <div class="note-brand">COFFEE WHISPERS</div>
+      <div class="note-date" id="resDate">2026.08.20</div>
+    </header>
+
+    <div class="note-top-line"></div>
+
+    <section class="note-visual-area">
+      <div class="note-side-writing">TODAY'S<br>COFFEE<br>NOTE</div>
+
+      <!-- 结果页咖啡视觉：会同步用户刚才的调配 -->
+      <div class="result-coffee-visual coffee-visual" id="resultCoffeeVisual">
+        <div class="steam-wrap">
+          <div class="steam steam-1"></div>
+          <div class="steam steam-2"></div>
+          <div class="steam steam-3"></div>
         </div>
 
-        <h2 class="res-coffee-name" id="resCoffeeName">清晨的克制 · 桂花燕麦拿铁</h2>
-        
-        <div class="flavor-pills" id="resFlavorPills">
-          <!-- 动态渲染风味标签 -->
-        </div>
+        <div class="saucer"></div>
 
-        <div class="divider"></div>
+        <div class="cup" id="resultCup">
+          <div class="liquid"></div>
+          <div class="milk-layer"></div>
+          <div class="crema"></div>
 
-        <div class="quote-box">
-          <span class="quote-mark">“</span>
-          <p class="quote-text" id="resQuote">不必急于把生活填满，留白的地方，正好用来容纳晨光与偶然的风。</p>
-        </div>
+          <div class="ice ice-1"></div>
+          <div class="ice ice-2"></div>
+          <div class="ice ice-3"></div>
 
-        <!-- 陪伴书籍推荐模块 -->
-        <div class="book-card">
-          <div class="book-label">今日推荐阅读</div>
-          <div class="book-title" id="resBookTitle">《日日是好日》</div>
-          <div class="book-author" id="resBookAuthor">森下典子</div>
-          <p class="book-reason" id="resBookReason">在茶道与四季的微小起伏中，重新找回身体对时间的感知。</p>
-        </div>
+          <div class="bubble bubble-1"></div>
+          <div class="bubble bubble-2"></div>
+          <div class="bubble bubble-3"></div>
 
-        <div class="card-footer">
-          <div class="brand-signature">DAILY COFFEE WHISPERS</div>
-          <div class="save-tip">截图保存今日灵感</div>
+          <div class="topping"></div>
         </div>
       </div>
 
-      <button class="re-tweak-btn" id="reStartBtn">重新调配</button>
+      <div class="note-ink-mark"></div>
     </section>
+
+    <section class="coffee-intro">
+      <div class="editorial-label">TODAY'S CUP</div>
+
+      <!-- 根据用户实际选择生成 -->
+      <h1 class="actual-coffee-name" id="resActualCoffeeName">
+        浅烘耶加雪菲 · 手冲
+      </h1>
+
+      <p class="actual-coffee-detail" id="resActualCoffeeDetail">
+        燕麦奶 / 干桂花 / 温热
+      </p>
+
+      <p class="flavor-line" id="resFlavorLine">
+        花香　·　谷物　·　柔和　·　安定
+      </p>
+    </section>
+
+    <div class="note-divider"></div>
+
+    <section class="advice-section">
+      <div class="advice-meta">
+        <span class="editorial-label">A SMALL ADVICE</span>
+        <span class="theme-tag" id="resTag">接纳与沉淀</span>
+      </div>
+
+      <blockquote class="literary-quote" id="resQuote">
+        不必急于把生活填满，留白的地方，正好用来容纳晨光与偶然的风。
+      </blockquote>
+    </section>
+
+    <section class="book-section">
+      <div class="book-rule"></div>
+
+      <div class="book-layout">
+        <div class="book-index">01</div>
+
+        <div class="book-content">
+          <div class="editorial-label">PAIR WITH A BOOK</div>
+          <h2 class="book-title" id="resBookTitle">《日日是好日》</h2>
+          <p class="book-author" id="resBookAuthor">森下典子</p>
+          <p class="book-reason" id="resBookReason">
+            在茶道与四季的微小起伏中，重新找回身体对时间的感知。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="note-footer">
+      <span>KEEP THIS CUP FOR TODAY</span>
+      <span class="note-footer-mark">—</span>
+    </footer>
+  </article>
+
+  <button class="re-tweak-btn" id="reStartBtn">重新调配</button>
+</section>
 
   </div>
 
