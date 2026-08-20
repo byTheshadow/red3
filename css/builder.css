@@ -410,8 +410,24 @@
  * 导航始终停留在调配页滚动容器底部。
  * 选项内容变多时可继续向下滚动，滚到底部也不会失去操作按钮。
  */
+.builder-nav {
+  position: sticky;
+  z-index: 20;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  margin-top: auto;
+  padding:
+    14px
+    0
+    calc(14px + env(safe-area-inset-bottom, 0px));
+  background: transparent;
+}
 
 .ghost-btn {
+  flex: 0 0 auto;
   min-height: 44px;
   padding: 0 4px;
   border: 0;
@@ -423,8 +439,9 @@
 }
 
 .next-btn {
+  flex: 0 0 auto;
   min-height: 44px;
-  margin-left: auto;
+  margin-left: auto; /* 强制推到最右侧 */
   padding: 11px 26px;
   border: 1px solid rgba(44, 42, 41, 0.6);
   border-radius: 999px;
@@ -434,6 +451,8 @@
   letter-spacing: 0.22em;
   cursor: pointer;
 }
+
+
 
 @keyframes steam-rise {
   0% {
