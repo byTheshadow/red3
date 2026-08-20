@@ -1,0 +1,19 @@
+{
+  "name": "咖啡谏言",
+  "short_name": "咖啡谏言",
+  "description": "调配今日的情绪，萃取一杯专属咖啡与温柔谏言。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F0EA",
+  "theme_color": "#F4F0EA",
+  "categories": [
+    "lifestyle",
+    "entertainment",
+    "books"
+  ],
+  "prefer_related_applications": false
+}
